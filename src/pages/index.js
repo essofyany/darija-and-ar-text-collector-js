@@ -1,82 +1,250 @@
 // const Twitter = require("twitter-v2");
-const Twitter = require("twitter");
+import { CSVLink } from "react-csv";
+import Loader from "react-loader-spinner";
 import { Thead } from "@chakra-ui/table";
 import { Th } from "@chakra-ui/table";
 import { Td } from "@chakra-ui/table";
 import { Tbody } from "@chakra-ui/table";
 import { Tr } from "@chakra-ui/table";
 import { Table } from "@chakra-ui/table";
-import keys from "../../keys";
+import { Button } from "@chakra-ui/button";
+import { Box } from "@chakra-ui/layout";
+import { Divider } from "@chakra-ui/layout";
+import useForm from "../hooks/useForm";
+import { FormLabel } from "@chakra-ui/form-control";
+import { Input } from "@chakra-ui/input";
+import { useState } from "react";
+import useSWR from "swr";
+import { Text } from "@chakra-ui/layout";
+import GitIcon from "../components/GitIcon";
+import { unifyArray } from "../utils/unifyArray";
+import { Center } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/toast";
 
-function HomePage({ data }) {
-  console.log(data);
-  return (
-    <Table size="sm">
-      <Thead>
-        <Tr>
-          <Th>Index</Th>
-          <Th>Tweet ID</Th>
-          <Th>Tweet Body</Th>
-          <Th>Lang</Th>
-          <Th>Location</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {data.map((tweet, index) => (
-          <Tr key={tweet.id}>
-            <Td>{index}</Td>
-            <Td>{tweet.id}</Td>
-            <Td>{tweet.text}</Td>
-            <Td>{tweet.lang}</Td>
-            <Td>{tweet.user.location}</Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  );
-}
-
-export async function getServerSideProps(context) {
-  const client = new Twitter({
-    consumer_key: keys.APIKey,
-    consumer_secret: keys.APISecretKey,
-    access_token_key: keys.access_token,
-    access_token_secret: keys.access_token_secret,
+function HomePage() {
+  const toast = useToast();
+  const [tweetData, setTweetData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const { input, handleChange } = useForm({
+    q: "@essofyanyB",
+    lang: "en",
+    count: "10",
   });
 
-  // query doc: https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-query
-  // Twitter-v2
-  // const params = {
-  //   // query: "from:DGSN_MAROC",
-  //   // query: "winners0005",
-  //   id: "chaimaadidi",
-  //   "tweet.fields": "conversation_id,lang", // Edit optional query parameters here
-  //   // "user.fields": "created_at",
-  // };
-  // const { data } = await client.get("tweets/search/recent", params);
-  // const { data } = await client.get("users/:id/tweets", params);
+  // const { data, error } = useSWR("/api/user/123", fetcher);
 
-  // Twitter-v1
-  // const params = { screen_name: "chaimaadidi", count: 10 };
-  // const data = await client.get("statuses/user_timeline", params);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (input.q.length >= 3) {
+      setIsLoading(true);
+      await fetch("api/tweets/post", {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // setTweetData([...tweetData, ...data.body]);
+          setIsLoading(false);
+          !data.body.length > 0 &&
+            toast({
+              position: "top",
+              status: "info",
+              title: "No Data Added!",
+              description: "there is no data for the query you enter.",
+              duration: "3000",
+              isClosable: "true",
+            });
+          const unified = unifyArray([...tweetData, ...data.body]);
+          setTweetData(unified);
+        })
+        .catch((error) => console.log(error));
+    } else {
+      toast({
+        position: "top",
+        status: "error",
+        title: "Invalid Query!",
+        duration: "3000",
+        isClosable: "true",
+      });
+    }
+  }
 
-  const params = {
-    q: "@chaimaadidi OR @AyshaIisha OR @RezraziI",
-    count: 200,
-    // locale: "ma", //usefull when searching by keywords
-    lang: "ar",
-    since_id: "1396168542685307000", //usefull for searchin for more then 100 tweet per person.
-    include_entities: "false",
-  };
-  const data = await client.get("search/tweets.json", params);
-
-  console.log(data.statuses.length);
-
-  return {
-    props: {
-      data: data.statuses,
-    },
-  };
+  return (
+    <Box h="100vh">
+      <Box w="full" h="85vh" overflow="hidden" overflowY="scroll">
+        <Table w="full" size="sm">
+          <Thead>
+            <Tr>
+              <Th key="1" color="red.700">
+                Index
+              </Th>
+              <Th key="6" color="red.700">
+                Tweet ID
+              </Th>
+              <Th key="2" color="red.700">
+                Username
+              </Th>
+              <Th key="3" color="red.700">
+                Tweet Body
+              </Th>
+              <Th key="4" color="red.700">
+                Created At
+              </Th>
+              <Th key="5" color="red.700">
+                Lang
+              </Th>
+            </Tr>
+          </Thead>
+          <Tbody position="relative">
+            {tweetData.length > 0 &&
+              tweetData.map((tweet, index) => (
+                <Tr key={tweet.tweetId}>
+                  <Td>{index + 1}</Td>
+                  <Td>{tweet.tweetId}</Td>
+                  <Td>{tweet.author}</Td>
+                  <Td>{tweet.text}</Td>
+                  <Td>{new Date(tweet.createdAt).toDateString().slice(4)}</Td>
+                  <Td>{tweet.lang}</Td>
+                </Tr>
+              ))}
+            {isLoading && (
+              <Center
+                zIndex="modal"
+                top="0.5"
+                w="full"
+                h="80%"
+                position="absolute"
+              >
+                <Loader
+                  type="Rings"
+                  color="#F8BD6D"
+                  height={200}
+                  width={200}
+                  // timeout={3000} //3 se#cs
+                />
+              </Center>
+            )}
+            {tweetData.length < 1 && (
+              <Center top="0.5" w="full" h="80%" position="absolute">
+                <Text color="gray.300" fontSize="lg">
+                  No Data To Display
+                </Text>
+              </Center>
+            )}
+          </Tbody>
+        </Table>
+      </Box>
+      <Divider />
+      <Box
+        p="5"
+        d="flex"
+        bg="red.50"
+        h="10vh"
+        w="full"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <form onSubmit={handleSubmit}>
+          <Box d="flex" justifyContent="space-between" alignItems="center">
+            <Box d="flex">
+              <Box d="flex" alignItems="center">
+                <FormLabel>Query:</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  type="text"
+                  name="q"
+                  value={input.q}
+                  placeholder="e.g: @essofyanyB"
+                />
+              </Box>
+              <Box mx="5" d="flex" alignItems="center">
+                <FormLabel>Language:</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  type="text"
+                  name="lang"
+                  value={input.lang}
+                  placeholder="e.g: ar for Arabic"
+                />
+              </Box>
+              <Box d="flex" alignItems="center">
+                <FormLabel>Count:</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  type="numeric"
+                  name="count"
+                  w="52"
+                  value={input.count}
+                  placeholder="e.g: 10, max value is 100"
+                />
+              </Box>
+            </Box>
+            <Button
+              colorScheme="blue"
+              borderRadius="full"
+              color="blackAlpha.900"
+              fontSize="sm"
+              fontWeight="medium"
+              ml="32"
+              type="submit"
+            >
+              Apply Query
+            </Button>
+          </Box>
+        </form>
+        {/* download and clear table Btns */}
+        <Button
+          colorScheme="orange"
+          borderRadius="full"
+          color="blackAlpha.900"
+          fontSize="sm"
+          mx="5"
+          fontWeight="medium"
+          disabled={tweetData.length > 0 ? false : true}
+          onClick={() => setTweetData([])}
+        >
+          Clear Table
+        </Button>
+        <Button
+          colorScheme="red"
+          borderRadius="full"
+          color="blackAlpha.900"
+          fontSize="sm"
+          fontWeight="medium"
+          disabled={tweetData.length < 1 ? true : false}
+          mr="10"
+        >
+          {tweetData.length < 1 ? (
+            "No Data To Download"
+          ) : (
+            <CSVLink data={tweetData}>Download This Data</CSVLink>
+          )}
+        </Button>
+      </Box>
+      {/* footer */}
+      <Box
+        d="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        px="5"
+        py="1"
+        color="#212121"
+      >
+        <Text fontSize="sm">
+          Created by: Essofyany Bilal, for PFE purpose, UM5 - 2021
+        </Text>
+        <a
+          href="https://github.com/essofyany/darija-and-ar-text-collector-js"
+          target="_blank"
+        >
+          <GitIcon />
+        </a>
+      </Box>
+    </Box>
+  );
 }
 
 export default HomePage;
