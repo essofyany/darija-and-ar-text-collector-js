@@ -217,7 +217,19 @@ function HomePage() {
           {tweetData.length < 1 ? (
             "No Data To Download"
           ) : (
-            <CSVLink data={tweetData}>Download This Data</CSVLink>
+            <CSVLink
+              onClick={() =>
+                toast({
+                  position: "top",
+                  status: "success",
+                  description: "The file will be downloaded in few seconds :)",
+                  duration: "3000",
+                })
+              }
+              data={tweetData}
+            >
+              Download This Data
+            </CSVLink>
           )}
         </Button>
       </Box>
