@@ -8,10 +8,17 @@ export default async function handler(req, res) {
       } = req;
       // Process a POST request
       const client = new Twitter({
+<<<<<<< HEAD
         consumer_key: process.env.CONSUMER_KEY,
         consumer_secret: process.env.CONSUMER_SECRET,
         access_token_key: process.env.ACCESS_TOKEN_KEY,
         access_token_secret: process.env.ACCESS_TOKEN_SECRET,
+=======
+        consumer_key: "your keys hare",
+        consumer_secret: "your keys hare",
+        access_token_key:"your keys hare",
+        access_token_secret: "your keys hare",
+>>>>>>> 5a75c92e6eda6d830b986505a81298bc83c0fbc5
       });
       const params = {
         q,
