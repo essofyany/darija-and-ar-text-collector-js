@@ -14,7 +14,6 @@ import useForm from "../hooks/useForm";
 import { FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { useState } from "react";
-import useSWR from "swr";
 import { Text } from "@chakra-ui/layout";
 import GitIcon from "../components/GitIcon";
 import { unifyArray } from "../utils/unifyArray";
@@ -30,8 +29,6 @@ function HomePage() {
     lang: "en",
     count: "10",
   });
-
-  // const { data, error } = useSWR("/api/user/123", fetcher);
 
   async function handleSubmit(e) {
     e.preventDefault();

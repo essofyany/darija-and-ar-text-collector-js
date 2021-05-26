@@ -1,4 +1,4 @@
-import Twitter from "twitter";
+const Twitter = require("twitter");
 
 export default async function handler(req, res) {
   try {
@@ -8,10 +8,10 @@ export default async function handler(req, res) {
       } = req;
       // Process a POST request
       const client = new Twitter({
-        consumer_key: "lBheSn1mVj7DIlqfEYQfoGh6Z",
-        consumer_secret: "JrCCWKnK3uiwMRxip8gkIXRomSSYxK4tkNQr4bGGeMLD1fNPel",
-        access_token_key: "1311288548100894721-pRsBl7ZZny4OaEonO403lalMb2Wdxa",
-        access_token_secret: "YpblrM7sBa8yiAIR294JjSsr0Q0eJxoRoONh3LydNUWKv",
+        consumer_key: process.env.CONSUMER_KEY,
+        consumer_secret: process.env.CONSUMER_SECRET,
+        access_token_key: process.env.ACCESS_TOKEN_KEY,
+        access_token_secret: process.env.ACCESS_TOKEN_SECRET,
       });
       const params = {
         q,
