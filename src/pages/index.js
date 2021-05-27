@@ -26,14 +26,14 @@ function HomePage() {
   const [tweetData, setTweetData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { input, handleChange } = useForm({
-    q: "@essofyanyB",
-    lang: "en",
-    count: "10",
+    q: "",
+    lang: "",
+    screen_name: "",
   });
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (input.q.length >= 3) {
+    if (input.lang !== "") {
       setIsLoading(true);
       await fetch("api/tweets/post", {
         method: "POST",
@@ -64,6 +64,7 @@ function HomePage() {
         position: "top",
         status: "error",
         title: "Invalid Query!",
+        description: "Language is required",
         duration: "3000",
         isClosable: "true",
       });
@@ -158,7 +159,8 @@ function HomePage() {
                   (en, ar, fr, ...).
                 </Text>
                 <Text color="gray.300" fontSize="lg">
-                  Count: data size, max value is 100 per-request.
+                  Username: is used to receive user tweet, username without '@'
+                  symbol.
                 </Text>
               </Center>
             )}
@@ -184,29 +186,31 @@ function HomePage() {
                   onChange={handleChange}
                   type="text"
                   name="q"
+                  w="56"
                   value={input.q}
-                  placeholder="e.g: @essofyanyB"
+                  placeholder="e.g: '@essofyanyB', 'سلام',..."
                 />
               </Box>
               <Box mx="5" d="flex" alignItems="center">
+                <FormLabel>Username:</FormLabel>
+                <Input
+                  onChange={handleChange}
+                  type="text"
+                  w="36"
+                  name="screen_name"
+                  value={input.screen_name}
+                  placeholder="e.g: essofyanyB"
+                />
+              </Box>
+              <Box d="flex" alignItems="center">
                 <FormLabel>Language:</FormLabel>
                 <Input
                   onChange={handleChange}
                   type="text"
                   name="lang"
+                  w="40"
                   value={input.lang}
-                  placeholder="e.g: ar for Arabic"
-                />
-              </Box>
-              <Box d="flex" alignItems="center">
-                <FormLabel>Count:</FormLabel>
-                <Input
-                  onChange={handleChange}
-                  type="numeric"
-                  name="count"
-                  w="52"
-                  value={input.count}
-                  placeholder="e.g: 10, max value is 100"
+                  placeholder="e.g: 'ar' for Arabic"
                 />
               </Box>
             </Box>
@@ -216,7 +220,7 @@ function HomePage() {
               color="blackAlpha.900"
               fontSize="sm"
               fontWeight="medium"
-              ml="32"
+              ml="20"
               type="submit"
             >
               Apply Query
@@ -243,7 +247,7 @@ function HomePage() {
           fontSize="sm"
           fontWeight="medium"
           disabled={tweetData.length < 1 ? true : false}
-          mr="10"
+          mr="5"
         >
           {tweetData.length < 1 ? (
             "No Data To Download"
