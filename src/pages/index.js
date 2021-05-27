@@ -19,6 +19,7 @@ import GitIcon from "../components/GitIcon";
 import { unifyArray } from "../utils/unifyArray";
 import { Center } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
+import { CloseIcon } from "@chakra-ui/icons";
 
 function HomePage() {
   const toast = useToast();
@@ -69,6 +70,11 @@ function HomePage() {
     }
   }
 
+  function deleteTweet(tweetId) {
+    const result = tweetData.filter((tweet) => tweet.tweetId !== tweetId);
+    setTweetData(result);
+  }
+
   return (
     <Box h="100vh">
       <Box w="full" h="85vh" overflow="hidden" overflowY="scroll">
@@ -76,7 +82,7 @@ function HomePage() {
           <Thead>
             <Tr>
               <Th key="1" color="red.700">
-                Index
+                Idx
               </Th>
               <Th key="6" color="red.700">
                 Tweet ID
@@ -88,11 +94,12 @@ function HomePage() {
                 Tweet Body
               </Th>
               <Th key="4" color="red.700">
-                Created At
+                Created_At
               </Th>
               <Th key="5" color="red.700">
                 Lang
               </Th>
+              <Th key="5" color="red.700"></Th>
             </Tr>
           </Thead>
           <Tbody position="relative">
@@ -105,6 +112,13 @@ function HomePage() {
                   <Td>{tweet.text}</Td>
                   <Td>{new Date(tweet.createdAt).toDateString().slice(4)}</Td>
                   <Td>{tweet.lang}</Td>
+                  <Td>
+                    <CloseIcon
+                      onClick={() => deleteTweet(tweet.tweetId)}
+                      cursor="pointer"
+                      _hover={{ color: "red" }}
+                    />
+                  </Td>
                 </Tr>
               ))}
             {isLoading && (
@@ -125,9 +139,26 @@ function HomePage() {
               </Center>
             )}
             {tweetData.length < 1 && (
-              <Center top="0.5" w="full" h="80%" position="absolute">
-                <Text color="gray.300" fontSize="lg">
+              <Center
+                flexDir="column"
+                top="0.5"
+                w="full"
+                h="80%"
+                position="absolute"
+              >
+                <Text mb="10" color="gray.300" fontSize="xl">
                   No Data To Display
+                </Text>
+                <Text color="gray.300" fontSize="lg">
+                  Query: a keyword(s) or username(s) that will be used for
+                  searching.
+                </Text>
+                <Text my="2" color="gray.300" fontSize="lg">
+                  Language: the language of the data that will be requested like
+                  (en, ar, fr, ...).
+                </Text>
+                <Text color="gray.300" fontSize="lg">
+                  Count: data size, max value is 100 per-request.
                 </Text>
               </Center>
             )}
