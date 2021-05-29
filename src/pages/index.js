@@ -1,12 +1,4 @@
-// const Twitter = require("twitter-v2");
 import { CSVLink } from "react-csv";
-import Loader from "react-loader-spinner";
-import { Thead } from "@chakra-ui/table";
-import { Th } from "@chakra-ui/table";
-import { Td } from "@chakra-ui/table";
-import { Tbody } from "@chakra-ui/table";
-import { Tr } from "@chakra-ui/table";
-import { Table } from "@chakra-ui/table";
 import { Button } from "@chakra-ui/button";
 import { Box } from "@chakra-ui/layout";
 import { Divider } from "@chakra-ui/layout";
@@ -17,13 +9,22 @@ import { useState } from "react";
 import { Text } from "@chakra-ui/layout";
 import GitIcon from "../components/GitIcon";
 import { unifyArray } from "../utils/unifyArray";
-import { Center } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
-import { CloseIcon } from "@chakra-ui/icons";
+import HistoryTable from "../components/HistoryTable";
+import TweetsTable from "../components/TweetsTable";
+import { Center } from "@chakra-ui/layout";
+import Loader from "react-loader-spinner";
+import Scrollbars from "react-custom-scrollbars-2";
+import Stats from "../components/Stats";
 
 function HomePage() {
   const toast = useToast();
+  const [stats, setStats] = useState({
+    added: 0,
+    total: 0,
+  });
   const [tweetData, setTweetData] = useState([]);
+  const [queryHistory, setQueryHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { input, handleChange } = useForm({
     q: "",
@@ -57,6 +58,11 @@ function HomePage() {
             });
           const unified = unifyArray([...tweetData, ...data.body]);
           setTweetData(unified);
+          setStats({});
+          setQueryHistory([
+            ...queryHistory,
+            `${input.q}, ${input.screen_name},${input.lang}`,
+          ]);
         })
         .catch((error) => console.log(error));
     } else {
@@ -78,96 +84,34 @@ function HomePage() {
 
   return (
     <Box h="100vh">
-      <Box w="full" h="85vh" overflow="hidden" overflowY="scroll">
-        <Table w="full" size="sm">
-          <Thead>
-            <Tr>
-              <Th key="1" color="red.700">
-                Idx
-              </Th>
-              <Th key="6" color="red.700">
-                Tweet ID
-              </Th>
-              <Th key="2" color="red.700">
-                Username
-              </Th>
-              <Th key="3" color="red.700">
-                Tweet Body
-              </Th>
-              <Th key="4" color="red.700">
-                Created_At
-              </Th>
-              <Th key="5" color="red.700">
-                Lang
-              </Th>
-              <Th key="5" color="red.700"></Th>
-            </Tr>
-          </Thead>
-          <Tbody position="relative">
-            {tweetData.length > 0 &&
-              tweetData.map((tweet, index) => (
-                <Tr key={tweet.tweetId}>
-                  <Td>{index + 1}</Td>
-                  <Td>{tweet.tweetId}</Td>
-                  <Td>{tweet.author}</Td>
-                  <Td>{tweet.text}</Td>
-                  <Td>{new Date(tweet.createdAt).toDateString().slice(4)}</Td>
-                  <Td>{tweet.lang}</Td>
-                  <Td>
-                    <CloseIcon
-                      onClick={() => deleteTweet(tweet.tweetId)}
-                      cursor="pointer"
-                      _hover={{ color: "red" }}
-                    />
-                  </Td>
-                </Tr>
-              ))}
-            {isLoading && (
-              <Center
-                zIndex="modal"
-                top="0.5"
-                w="full"
-                h="80%"
-                position="absolute"
-              >
-                <Loader
-                  type="Rings"
-                  color="#F8BD6D"
-                  height={200}
-                  width={200}
-                  // timeout={3000} //3 se#cs
-                />
-              </Center>
-            )}
-            {tweetData.length < 1 && (
-              <Center
-                flexDir="column"
-                top="0.5"
-                w="full"
-                h="80%"
-                position="absolute"
-              >
-                <Text mb="10" color="gray.300" fontSize="xl">
-                  No Data To Display
-                </Text>
-                <Text color="gray.300" fontSize="lg">
-                  Query: a keyword(s) or username(s) that will be used for
-                  searching.
-                </Text>
-                <Text my="2" color="gray.300" fontSize="lg">
-                  Language: the language of the data that will be requested like
-                  (en, ar, fr, ...).
-                </Text>
-                <Text color="gray.300" fontSize="lg">
-                  Username: is used to receive user tweet, username without '@'
-                  symbol.
-                </Text>
-              </Center>
-            )}
-          </Tbody>
-        </Table>
+      <Box d="flex" w="full" h="85vh">
+        <Box w="85vw" overflow="hidden">
+          <Scrollbars>
+            <TweetsTable tweetData={tweetData} deleteTweet={deleteTweet} />
+          </Scrollbars>
+        </Box>
+        <Divider orientation="vertical" />
+        {/* Query History table */}
+        <Box w="15vw" bg="yellow.50" overflow="hidden">
+          <Scrollbars>
+            <HistoryTable queryHistory={queryHistory} />
+          </Scrollbars>
+        </Box>
       </Box>
       <Divider />
+      {isLoading && (
+        <Center
+          zIndex="modal"
+          right="24"
+          top="5"
+          w="full"
+          h="70%"
+          position="absolute"
+        >
+          <Loader type="Rings" color="#F8BD6D" height={200} width={200} />
+        </Center>
+      )}
+      {/* Form */}
       <Box
         p="5"
         d="flex"
@@ -214,6 +158,7 @@ function HomePage() {
                 />
               </Box>
             </Box>
+            {/* <Stats total={stats.total} added={stats.added} /> */}
             <Button
               colorScheme="blue"
               borderRadius="full"
@@ -236,7 +181,10 @@ function HomePage() {
           mx="5"
           fontWeight="medium"
           disabled={tweetData.length > 0 ? false : true}
-          onClick={() => setTweetData([])}
+          onClick={() => {
+            setTweetData([]);
+            setQueryHistory([]);
+          }}
         >
           Clear Table
         </Button>
