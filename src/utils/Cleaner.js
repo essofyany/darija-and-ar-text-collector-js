@@ -92,7 +92,5 @@ export class Cleaner {
 
   checkSimilarity() {}
 
-  deleteDups(arr) {
-      
-  }
+  deleteDups() {}
 }
