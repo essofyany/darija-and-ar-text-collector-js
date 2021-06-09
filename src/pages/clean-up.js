@@ -61,6 +61,7 @@ function CleanUpPage() {
       <form onSubmit={handleSubmit}>
         <Textarea
           type="text"
+          textAlign="right"
           onChange={(e) => setStr(e.target.value)}
           value={str}
           rows="6"
