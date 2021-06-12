@@ -15,7 +15,7 @@ function CleanUpPage() {
   const stemmer = newStemmer("arabic");
   const deleteRedundancy = new DeleteRedundancy();
 
-  const [str, setStr] = useStat;e("");
+  const [str, setStr] = useState("");
   const [result, setResult] = useState("");
   const [target, setTarget] = useState("");
 
