@@ -22,7 +22,7 @@ function Header() {
       justifyContent="space-between"
       bg="white"
       w="100vw"
-      h="5vh"
+      h="10vh"
       px="5"
       py="2"
       mb="5"
@@ -39,10 +39,18 @@ function Header() {
           <HamburgerIcon w="28px" h="28px" />
         </MenuButton>
         <MenuList bg="white">
-          <MenuItem color="blue.900" icon={<AddIcon />}>
+          <MenuItem
+            color="blue.900"
+            onClick={() => router.push("/")}
+            icon={<AddIcon />}
+          >
             Collect Tweets
           </MenuItem>
-          <MenuItem color="blue.900" icon={<EditIcon />}>
+          <MenuItem
+            color="blue.900"
+            onClick={() => router.push("/clean-up")}
+            icon={<EditIcon />}
+          >
             Text Pre-Processor
           </MenuItem>
           <MenuItem
@@ -56,7 +64,13 @@ function Header() {
           >
             Source Code
           </MenuItem>
-          <MenuItem color="blue.900" icon={<RepeatIcon />}></MenuItem>
+          <MenuItem
+            onClick={() => router.reload()}
+            color="blue.900"
+            icon={<RepeatIcon />}
+          >
+            Refresh
+          </MenuItem>
         </MenuList>
       </Menu>
     </Box>

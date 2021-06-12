@@ -15,7 +15,6 @@ import TweetsTable from "../components/TweetsTable";
 import { Center } from "@chakra-ui/layout";
 import Loader from "react-loader-spinner";
 import Scrollbars from "react-custom-scrollbars-2";
-import Stats from "../components/Stats";
 
 function HomePage() {
   const toast = useToast();

@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function labeling() {
   const tweetList = useSelector((state) => state.tweet.tweets.slice(0, 15));
-  console.log(tweetList.length);
+  // console.log(tweetList.length);
   const dispatch = useDispatch();
   const toast = useToast();
 
@@ -39,7 +39,7 @@ function labeling() {
         data: { data },
       } = await api.updateAPI({ ...tweet, polarity: "positive" });
       dispatch(labeledTweet(tweet._id));
-      console.log("positive");
+      // console.log("positive");
       toast({
         title: "Marked as Positive",
         status: "success",
@@ -52,7 +52,7 @@ function labeling() {
   async function onNegative(tweet) {
     try {
       await api.updateAPI({ ...tweet, polarity: "negative" });
-      console.log("negative");
+      // console.log("negative");
       dispatch(labeledTweet(tweet._id));
 
       toast({
@@ -68,11 +68,11 @@ function labeling() {
   async function onNeutral(tweet) {
     try {
       await api.updateAPI({ ...tweet, polarity: "neutral" });
-      console.log("neutral");
+      // console.log("neutral");
       dispatch(labeledTweet(tweet._id));
 
       toast({
-        title: "Marked as Negative",
+        title: "Marked as Neutral",
         status: "success",
         duration: "1000",
       });
@@ -85,7 +85,7 @@ function labeling() {
     try {
       // console.log(tweet);
       await api.updateAPI({ ...tweet, polarity: "edited" });
-      console.log("edited");
+      // console.log("edited");
       // dispatch(labeledTweet(tweet._id));
       toast({
         title: "Tweet Edited",
@@ -102,7 +102,7 @@ function labeling() {
       console.log(id);
       await api.deleteAPI(id);
       dispatch(deleteTweet(id));
-      console.log("deleted");
+      // console.log("deleted");
 
       toast({
         title: "Tweet deleted",

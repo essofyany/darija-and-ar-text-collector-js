@@ -1,4 +1,4 @@
-import { Box, Text, Center } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 function Footer() {
@@ -8,7 +8,7 @@ function Footer() {
     <Box
       d="flex"
       justifyContent="space-between"
-      alignItems='center'
+      alignItems="center"
       bg="white"
       borderTop="2px solid #ccc"
       w="100vw"
@@ -20,8 +20,8 @@ function Footer() {
       mt="5"
       zIndex="sticky"
     >
-      <Text fontWeight="" fontSize="md">
-       Thank you so much ❤️
+      <Text fontWeight="md" fontSize="md">
+        Created By Essofyany Bilal, 2021-2020
       </Text>
       <Text fontWeight="md" fontSize="lg">
         {metaData.labeledTweets}/{metaData.totalTweets}
