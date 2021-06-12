@@ -9,6 +9,22 @@ const tweetSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  lang: {
+    type: String,
+    required: true,
+  },
+  tweetId: {
+    type: String,
+    required: true,
+  },
 });
 
-export default mongoose.model("Tweet", tweetSchema);
+export default mongoose.models.Tweet || mongoose.model("Tweet", tweetSchema);

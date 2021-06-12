@@ -1,101 +1,147 @@
-import { useEffect, useState } from "react";
-import { Heading, Center, Container, useToast } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Container, useToast } from "@chakra-ui/react";
 import TweetLabelCard from "../components/TweetLabelCard";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import SkeletonList from "../components/SkeletonList";
+import {
+  deleteTweet,
+  getTweets,
+  labeledTweet,
+  setLoadMore,
+  setMetaData,
+} from "../features/tweetsSlice";
+import * as api from "../utils/api";
+import { useDispatch, useSelector } from "react-redux";
 
 function labeling() {
+  const tweetList = useSelector((state) => state.tweet.tweets.slice(0, 15));
+  console.log(tweetList.length);
+  const dispatch = useDispatch();
   const toast = useToast();
-  const [data, setData] = useState([
-    {
-      id: "1",
-      text: "بغيت نولي لباس عليا مشي نولي لباس عليا مشي  نولي لباس عليا مشي  نبان لباس عليا",
-      polarity: "",
-      validated: false,
-    },
-    {
-      id: "2",
-      text: "كاينة اخي ولكن مشي كذبة بهاد الصيفة وانما اختبار صعيب",
-      polarity: "",
-      validated: false,
-    },
-    {
-      id: "3",
-      text: "شحال خايبة يبقى لك غير تصاور ديال شي حد عزيز عليك بزاف",
-      polarity: "",
-      validated: false,
-    },
-  ]);
-  const [count, setCount] = useState(0);
 
-  async function onPositive(tweetId) {
-    // const payload = data.filter((tweet) => tweet.id === tweetId);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await api.getTweetsAPI();
+        dispatch(getTweets(data.data));
+        dispatch(setLoadMore());
+        dispatch(setMetaData(data.metaData));
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
-    const res = await fetch("http://localhost:5000/api/positive", {
-      method: "POST",
-      body: JSON.stringify({
-        text: "شحال خايبة يبقى لك غير تصاور ديال شي حد عزيز عليك بزاف",
-        polarity: "",
-      }),
-    });
-    
-    console.log(res);
-    // labeling
-    const labeled = data.map((tweet) =>
-      tweet.id === tweetId ? { ...tweet, polarity: "positive" } : tweet
-    );
-
-    // feltring
-    const filtredTweets = labeled.filter(
-      (tweet) => tweet.polarity !== "positive"
-    );
-
-    setData(filtredTweets);
-
-    setCount(count + 1);
-    // console.log(data);
-    toast({
-      title: "Marked as Positive",
-      status: "success",
-      duration: "1000",
-    });
+  async function onPositive(tweet) {
+    try {
+      const {
+        data: { data },
+      } = await api.updateAPI({ ...tweet, polarity: "positive" });
+      dispatch(labeledTweet(tweet._id));
+      console.log("positive");
+      toast({
+        title: "Marked as Positive",
+        status: "success",
+        duration: "1000",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
-  function onNegative() {
-    toast({
-      title: "Marked as Negative",
-      status: "success",
-      duration: "1000",
-    });
-  }
-  function onEdit(e) {
-    e.preventDefault();
-    toast({
-      title: "Tweet Edited",
-      status: "success",
-      duration: "1000",
-    });
+  async function onNegative(tweet) {
+    try {
+      await api.updateAPI({ ...tweet, polarity: "negative" });
+      console.log("negative");
+      dispatch(labeledTweet(tweet._id));
+
+      toast({
+        title: "Marked as Negative",
+        status: "success",
+        duration: "1000",
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  useEffect(() => {}, [count]);
+  async function onNeutral(tweet) {
+    try {
+      await api.updateAPI({ ...tweet, polarity: "neutral" });
+      console.log("neutral");
+      dispatch(labeledTweet(tweet._id));
+
+      toast({
+        title: "Marked as Negative",
+        status: "success",
+        duration: "1000",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function onEdit(tweet) {
+    try {
+      // console.log(tweet);
+      await api.updateAPI({ ...tweet, polarity: "edited" });
+      console.log("edited");
+      // dispatch(labeledTweet(tweet._id));
+      toast({
+        title: "Tweet Edited",
+        status: "success",
+        duration: "1000",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function onDelete(id) {
+    try {
+      console.log(id);
+      await api.deleteAPI(id);
+      dispatch(deleteTweet(id));
+      console.log("deleted");
+
+      toast({
+        title: "Tweet deleted",
+        status: "success",
+        duration: "1000",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
-      <Center bg="lightsalmon" w="100vw" p="1" mb="5">
-        <Heading>Labeling tweets</Heading>
-      </Center>
+      <Header />
       <Container
         mx="auto"
         d="flex"
         flexDir="column"
+        pb="14"
+        bg="blue.50"
         maxW={{ xl: "4xl", lg: "3xl", md: "3xl" }}
       >
-        {data.map((tweet) => (
-          <TweetLabelCard
-            onPositive={onPositive}
-            onNegative={onNegative}
-            onEdit={onEdit}
-            tweet={tweet}
-            key={tweet.id}
-          />
-        ))}
+        {tweetList.length > 0 ? (
+          tweetList.map((tweet) => (
+            <TweetLabelCard
+              onPositive={onPositive}
+              onNegative={onNegative}
+              onNeutral={onNeutral}
+              onDelete={onDelete}
+              onEdit={onEdit}
+              tweet={tweet}
+              key={tweet._id}
+            />
+          ))
+        ) : (
+          <SkeletonList />
+        )}
       </Container>
+      <Footer />
     </>
   );
 }
