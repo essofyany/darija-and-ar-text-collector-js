@@ -7,7 +7,7 @@ import { Box } from "@chakra-ui/layout";
 import { Textarea } from "@chakra-ui/textarea";
 import { useState } from "react";
 import { newStemmer } from "../utils/snowballStemmer";
-import Normalizor from "../utils/Normalizor";
+import Normalizor from "../utils/normalizor";
 import DeleteRedundancy from "../utils/DeleteRedundancy";
 import { Text } from "@chakra-ui/layout";
 
@@ -15,7 +15,7 @@ function CleanUpPage() {
   const stemmer = newStemmer("arabic");
   const deleteRedundancy = new DeleteRedundancy();
 
-  const [str, setStr] = useState("");
+  const [str, setStr] = useStat;e("");
   const [result, setResult] = useState("");
   const [target, setTarget] = useState("");
 
