@@ -21,10 +21,10 @@ function Footer() {
       zIndex="sticky"
     >
       <Text fontWeight="md" fontSize="md">
-        Created By Essofyany Bilal, 2021-2020
+        Created By Essofyany Bilal
       </Text>
-      <Text fontWeight="md" fontSize="lg">
-        {metaData.labeledTweets}/{metaData.totalTweets}
+      <Text fontWeight="md" fontSize="md">
+        😁 2021-2020
       </Text>
     </Box>
   );

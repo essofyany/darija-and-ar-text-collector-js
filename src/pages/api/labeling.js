@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     case "GET" /* Get Tweets */:
       try {
         // { polarity: "" }
-        const tweets = await Tweet.find({ polarity: "" }).limit(100);
+        const tweets = await Tweet.find({ polarity: "" }).limit(200);
         const totalTweets = await Tweet.countDocuments({});
         const unlabeledTweets = await Tweet.countDocuments({
           polarity: "",

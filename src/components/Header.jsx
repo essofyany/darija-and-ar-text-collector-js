@@ -12,28 +12,38 @@ import {
   ExternalLinkIcon,
   RepeatIcon,
   EditIcon,
+  TriangleUpIcon,
 } from "@chakra-ui/icons";
 import router from "next/router";
+import { useSelector } from "react-redux";
 
 function Header() {
+  const metaData = useSelector((state) => state.tweet.metaData);
+
   return (
     <Box
       d="flex"
       justifyContent="space-between"
+      alignItems="center"
       bg="white"
       w="100vw"
       h="5vh"
       px="5"
-      py="2"
+      py="4"
       mb="5"
       position="sticky"
       top="0"
       zIndex="modal"
       boxShadow="md"
     >
-      <Text fontWeight="medium" fontSize="lg">
-        Labeling Tweets
-      </Text>
+      {/* 🔺 */}
+      <Box d="flex">
+        <TriangleUpIcon mx="1" boxSize={6} color="green.500" />
+        <Text fontWeight="semibold" fontSize="lg">
+          {metaData.labeledTweets}/{metaData.totalTweets}
+        </Text>
+      </Box>
+
       <Menu>
         <MenuButton variant="outline">
           <HamburgerIcon w="28px" h="28px" />
