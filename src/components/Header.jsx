@@ -22,7 +22,7 @@ function Header() {
       justifyContent="space-between"
       bg="white"
       w="100vw"
-      h="10vh"
+      h="5vh"
       px="5"
       py="2"
       mb="5"
