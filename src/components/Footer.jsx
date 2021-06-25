@@ -21,7 +21,7 @@ function Footer() {
       zIndex="sticky"
     >
       <Text fontWeight="md" fontSize="md">
-        Created By Essofyany Bilal
+        Developed By Essofyany Bilal
       </Text>
       <Text fontWeight="md" fontSize="md">
         😁 2021-2020

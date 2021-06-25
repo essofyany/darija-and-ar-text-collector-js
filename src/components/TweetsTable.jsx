@@ -10,7 +10,7 @@ import { Table } from "@chakra-ui/table";
 
 function TweetsTable({ tweetData, deleteTweet }) {
   return (
-    <Table w="85vw" size="sm" h="full">
+    <Table w="full" size="sm" h="full">
       <Thead>
         <Tr>
           <Th key="1" color="red.700">
@@ -31,7 +31,9 @@ function TweetsTable({ tweetData, deleteTweet }) {
           <Th key="5" color="red.700">
             Lang
           </Th>
-          <Th key="5" color="red.700"></Th>
+          <Th key="5" color="red.700">
+            Delete
+          </Th>
         </Tr>
       </Thead>
       <Tbody position="relative">
@@ -39,7 +41,7 @@ function TweetsTable({ tweetData, deleteTweet }) {
           tweetData.map((tweet, index) => (
             <Tr key={tweet.tweetId}>
               <Td>{index + 1}</Td>
-              <Td>{tweet.tweetId}</Td>
+              <Td maxW="20">{tweet.tweetId}</Td>
               <Td>{tweet.author}</Td>
               <Td>{tweet.text}</Td>
               <Td>{new Date(tweet.createdAt).toDateString().slice(4)}</Td>
@@ -65,16 +67,15 @@ function TweetsTable({ tweetData, deleteTweet }) {
               No Data To Display
             </Text>
             <Text color="gray.300" fontSize="lg">
-              Query: a keyword(s) or username(s) that will be used for
-              searching.
-            </Text>
-            <Text my="2" color="gray.300" fontSize="lg">
-              Language: the language of the data that will be requested like
-              (en, ar, fr, ...).
+              Query: a keyword(s) based search.
             </Text>
             <Text color="gray.300" fontSize="lg">
-              Username: is used to receive user tweet, username without '@'
-              symbol.
+              Username: collecting specific user tweets, "username without @
+              symbol".
+            </Text>
+            <Text my="2" color="gray.300" fontSize="lg">
+              Lang: the language of the data that will be requested like (en,
+              ar, fr, ...).
             </Text>
           </Center>
         )}

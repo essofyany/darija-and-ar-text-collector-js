@@ -14,8 +14,8 @@ import {
   EditIcon,
   TriangleUpIcon,
 } from "@chakra-ui/icons";
-import router from "next/router";
 import { useSelector } from "react-redux";
+import router from "next/router";
 
 function Header() {
   const metaData = useSelector((state) => state.tweet.metaData);

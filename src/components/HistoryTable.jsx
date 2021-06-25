@@ -7,7 +7,11 @@ import { Table } from "@chakra-ui/table";
 
 function HistoryTable({ queryHistory }) {
   return (
-    <Table w="15vw" size="sm" colorScheme="yellow">
+    <Table
+      w="full"
+      size="sm"
+      colorScheme="yellow"
+    >
       <Thead>
         <Tr>
           <Th textAlign="center" color="blackAlpha.800">
