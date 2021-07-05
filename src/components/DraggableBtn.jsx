@@ -18,7 +18,7 @@ import router from "next/router";
 
 const MotionMenuBtn = motion(Box);
 
-function DraggableBtn() {
+function DraggableBtn({ title1, title2, link1, link2 }) {
   return (
     <MotionMenuBtn
       position="absolute"
@@ -43,14 +43,14 @@ function DraggableBtn() {
           color="white"
         />
         <MenuList color="white">
-          <MenuItem onClick={() => router.push("/")} icon={<EditIcon />}>
-            Tweets collector
+          <MenuItem onClick={() => router.push(link1)} icon={<EditIcon />}>
+            {title1}
           </MenuItem>
           <MenuItem
-            onClick={() => router.push("/labeling")}
+            onClick={() => router.push(link2)}
             icon={<AttachmentIcon />}
           >
-            Tweets Labeler
+            {title2}
           </MenuItem>
           <MenuItem
             icon={<ExternalLinkIcon />}

@@ -297,7 +297,12 @@ function HomePage() {
           </a>
         </Box>
       </Box>
-      <DraggableBtn />
+      <DraggableBtn
+        link1="/labeling"
+        title1="Tweets Labeling"
+        link2="/clean-up"
+        title2="Text Pre-processing"
+      />
     </>
   );
 }

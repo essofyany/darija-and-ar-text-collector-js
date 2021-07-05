@@ -99,7 +99,12 @@ function CleanUpPage() {
         </form>
         <Divider my="10" />
         <Text>{result}</Text>
-        <DraggableBtn />
+        <DraggableBtn
+          link1="/"
+          title1="Tweets Collector"
+          link2="/labeling"
+          title2="Tweets Labeler"
+        />
       </Container>
       <Footer />
     </>
