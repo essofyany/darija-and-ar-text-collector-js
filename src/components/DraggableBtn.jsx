@@ -27,9 +27,9 @@ function DraggableBtn() {
       w="10"
       borderRadius="lg"
       bg="facebook.400"
-      animate={{ x: -100, y: 100 }}
+      animate={{ x: -90, y: 90 }}
       drag
-      dragConstraints={{ left: -340, right: 1, top: -1, bottom: 340 }}
+      dragConstraints={{ left: -540, right: 1, top: -1, bottom: 440 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       zIndex="modal"
@@ -43,17 +43,14 @@ function DraggableBtn() {
           color="white"
         />
         <MenuList color="white">
-          <MenuItem
-            onClick={() => router.push("/clean-up")}
-            icon={<EditIcon />}
-          >
-            Text Pre-Processor
+          <MenuItem onClick={() => router.push("/")} icon={<EditIcon />}>
+            Tweets collector
           </MenuItem>
           <MenuItem
             onClick={() => router.push("/labeling")}
             icon={<AttachmentIcon />}
           >
-            Tweets Labeling
+            Tweets Labeler
           </MenuItem>
           <MenuItem
             icon={<ExternalLinkIcon />}

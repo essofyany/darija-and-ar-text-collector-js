@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useEffect } from "react";
 import { Container, useToast } from "@chakra-ui/react";
 import TweetLabelCard from "../components/TweetLabelCard";
@@ -116,6 +117,9 @@ function labeling() {
 
   return (
     <>
+      <Head>
+        <title>Tweets Labeler (word embedding)</title>
+      </Head>
       <Header />
       <Container
         mx="auto"

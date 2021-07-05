@@ -29,7 +29,7 @@ function Header() {
       w="100vw"
       h="5vh"
       px="5"
-      py="4"
+      py="7"
       mb="5"
       position="sticky"
       top="0"
