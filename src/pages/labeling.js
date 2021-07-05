@@ -15,7 +15,7 @@ import * as api from "../utils/api";
 import { useDispatch, useSelector } from "react-redux";
 
 function labeling() {
-  const tweetList = useSelector((state) => state.tweet.tweets.slice(0, 20));
+  const tweetList = useSelector((state) => state.tweet.tweets);
   // console.log(tweetList.length);
   const dispatch = useDispatch();
   const toast = useToast();
