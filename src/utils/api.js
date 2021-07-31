@@ -1,8 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
-const url = "api/labeling";
+const url = 'api/labeling';
 
 export const getTweetsAPI = () => axios.get(url);
 export const createAPI = (data) => axios.post(url, data);
 export const updateAPI = (data) => axios.patch(url, data);
 export const deleteAPI = (id) => axios.put(url, { id });
+
+/**
+|--------------------------------------------------
+| 
+|--------------------------------------------------
+*/
+
+export const createWord = (data) => axios.post('/api/words', data);

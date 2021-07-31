@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.0",
+    "@chakra-ui/modal": "^1.8.9",
     "@chakra-ui/react": "^1.4.2",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
