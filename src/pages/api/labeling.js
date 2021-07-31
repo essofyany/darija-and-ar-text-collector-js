@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       try {
         console.log(Tweet);
         // { polarity: "" }
-        const tweets = await Tweet.find();
+        const tweets = await Tweet.find().limit(200);
         const totalTweets = await Tweet.countDocuments({});
         const unlabeledTweets = await Tweet.countDocuments({
           polarity: " ",
