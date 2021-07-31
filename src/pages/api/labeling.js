@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 // import dbConnect from "../../utils/dbConnect";
-import Tweet from '../../models/tweet';
+import Tweet from "../../models/tweet";
 
 export default async function handler(req, res) {
   const MONGODB_URL = process.env.MONGODB_URL;
@@ -13,19 +13,19 @@ export default async function handler(req, res) {
   };
 
   mongoose.connect(MONGODB_URL, opts).then(() => {
-    console.log('connecting to mongo');
+    console.log("connecting to mongo");
     // return mongoose;
   });
 
   switch (req.method) {
-    case 'GET' /* Get Tweets */:
+    case "GET" /* Get Tweets */:
       try {
         console.log(Tweet);
         // { polarity: "" }
-        const tweets = await Tweet.find().limit(100);
+        const tweets = await Tweet.find();
         const totalTweets = await Tweet.countDocuments({});
         const unlabeledTweets = await Tweet.countDocuments({
-          polarity: ' ',
+          polarity: " ",
         });
 
         if (!tweets) {
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       }
       break;
 
-    case 'POST' /* POST Tweet */:
+    case "POST" /* POST Tweet */:
       try {
         const tweet = await Tweet.create(req.body);
         console.log(tweet);
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
       }
       break;
 
-    case 'PATCH' /* Edit tweet */:
+    case "PATCH" /* Edit tweet */:
       try {
         const tweet = await Tweet.findByIdAndUpdate(req.body._id, req.body, {
           new: true,
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
       }
       break;
 
-    case 'PUT' /*  put for Delete tweet */:
+    case "PUT" /*  put for Delete tweet */:
       try {
         console.log(req.body);
         await Tweet.findByIdAndDelete({
