@@ -106,7 +106,7 @@ function CleanUpPage() {
           title2="Tweets Labeler"
         />
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

@@ -28,8 +28,8 @@ function HomePage() {
   const [queryHistory, setQueryHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { input, handleChange } = useForm({
-    q: "",
-    lang: "",
+    q: "سلام",
+    lang: "ar",
     screen_name: "",
   });
 
@@ -179,15 +179,15 @@ function HomePage() {
                   alignItems="center"
                   my="2"
                 >
-                  <FormLabel>Username:</FormLabel>
-                  <Input
+                  {/* <FormLabel>Username:</FormLabel> */}
+                  {/* <Input
                     onChange={handleChange}
                     type="text"
                     w={["full", "full", "36"]}
                     name="screen_name"
                     value={input.screen_name}
                     placeholder="e.g: essofyanyB"
-                  />
+                  /> */}
                 </Box>
                 <Box
                   d="flex"
@@ -277,7 +277,7 @@ function HomePage() {
           </form>
         </Box>
         {/* footer */}
-        <Box
+        {/* <Box
           d="flex"
           justifyContent={["center", "space-between"]}
           alignItems="center"
@@ -295,14 +295,14 @@ function HomePage() {
           >
             <GitIcon />
           </a>
-        </Box>
+        </Box> */}
       </Box>
-      <DraggableBtn
+      {/* <DraggableBtn
         link1="/labeling"
         title1="Tweets Labeling"
         link2="/clean-up"
         title2="Text Pre-processing"
-      />
+      /> */}
     </>
   );
 }
