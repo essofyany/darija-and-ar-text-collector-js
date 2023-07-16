@@ -17,6 +17,7 @@ import {
 import * as api from '../utils/api';
 
 function labeling() {
+  // const tweetList = useSelector((state) => shuffleArray(state.tweet.tweets));
   const tweetList = useSelector((state) => state.tweet.tweets);
   // console.log(tweetList.length);
   const dispatch = useDispatch();
@@ -132,6 +133,16 @@ function labeling() {
     onClose();
   };
 
+  function shuffleArray(array) {
+    const newArray = Array.from(array);
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+
+
   return (
     <>
       <Head>
@@ -146,8 +157,8 @@ function labeling() {
         bg='blue.50'
         maxW={{ xl: '4xl', lg: '3xl', md: '3xl' }}
       >
-        {tweetList.length > 0 ? (
-          tweetList.map((tweet) => (
+        {tweetList?.length > 0 ? (
+          tweetList?.map((tweet) => (
             <TweetLabelCard
               onPositive={() => {
                 setTextType('positive');

@@ -4,20 +4,18 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'POST') {
       const { words, type } = req.body;
-      if (words.length > 0) {
-        try {
-          words.map(async (word) => {
-            await new Word({
-              text: word,
-              type,
-            }).save();
-          });
-        } catch (err) {
-          console.log(err);
-        }
+      const isExist = await Word.findOne({ text: words });
+      console.log("isExist: ", isExist);
+      if (words?.length > 0 && !isExist) {
+        words.map(async (word) => {
+          await new Word({
+            text: word,
+            type,
+          }).save();
+        });
       }
-      res.status(200).json({
-        message: 'success',
+      res.status(201).json({
+        message: 'this word has been labeled successfully',
       });
     }
   } catch (err) {

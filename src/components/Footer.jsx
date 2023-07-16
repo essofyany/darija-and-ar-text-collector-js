@@ -21,10 +21,10 @@ function Footer() {
       zIndex="sticky"
     >
       <Text fontWeight="md" fontSize="md">
-        Developed By Essofyany Bilal
+        Developed By Chaymaa Rouiouih
       </Text>
       <Text fontWeight="md" fontSize="md">
-        😁 2021-2020
+        😁 2022-2023
       </Text>
     </Box>
   );

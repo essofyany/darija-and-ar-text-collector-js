@@ -63,7 +63,7 @@ function Header() {
           >
             Text Pre-Processor
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             color="blue.900"
             icon={<ExternalLinkIcon />}
             onClick={() =>
@@ -73,7 +73,7 @@ function Header() {
             }
           >
             Source Code
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             onClick={() => router.reload()}
             color="blue.900"
