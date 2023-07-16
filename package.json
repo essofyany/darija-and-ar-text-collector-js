@@ -6,6 +6,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "engines": {
+    "node": "16.14"
+  },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.0",
     "@chakra-ui/modal": "^1.8.9",
